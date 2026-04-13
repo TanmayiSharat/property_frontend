@@ -1,0 +1,5 @@
+{
+  "name": "LandlordPro MVP",
+  "description": "A minimal property management system for single landlords to track properties, income, and expenses.",
+  "requestFramePermissions": []
+}
