@@ -1,32 +1,54 @@
 export interface Property {
-  id: string;
+  property_id: number;
+  name?: string;
   address: string;
-  propertyType: string;
-  bedrooms: number;
-  bathrooms: number;
-  monthlyRent: number;
-  tenantName: string;
+  city?: string;
+  state?: string;
+  postal_code?: string;
+  property_type: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  monthly_rent: number;
+  tenant_name: string;
 }
 
 export type IncomeCategory = 'rent' | 'late fee' | 'deposit';
 
 export interface IncomeRecord {
-  id: string;
-  propertyId: string;
+  income_id?: number;
+  property_id?: number;
   amount: number;
-  paymentDate: string;
+  payment_date: string;
   category: IncomeCategory;
 }
 
 export interface ExpenseRecord {
-  id: string;
-  propertyId: string;
+  expense_id?: number;
+  property_id?: number;
   amount: number;
-  expenseDate: string;
+  expense_date: string;
   category: string;
   vendor: string;
 }
 
-export interface PropertyFormData extends Omit<Property, 'id'> {}
-export interface IncomeFormData extends Omit<IncomeRecord, 'id' | 'propertyId'> {}
-export interface ExpenseFormData extends Omit<ExpenseRecord, 'id' | 'propertyId'> {}
+export interface PropertyFormData {
+  address: string;
+  property_type: string;
+  bedrooms?: number;
+  bathrooms?: number;
+  monthly_rent: number;
+  tenant_name: string;
+}
+
+export interface IncomeFormData {
+  amount: number;
+  payment_date: string;
+  category: IncomeCategory;
+}
+
+export interface ExpenseFormData {
+  amount: number;
+  expense_date: string;
+  category: string;
+  vendor: string;
+}
