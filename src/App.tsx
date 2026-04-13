@@ -39,7 +39,7 @@ export default function App() {
     setIsSubmitting(true);
     try {
       if (editingProperty) {
-        await apiService.updateProperty(editingProperty.id, data);
+        await apiService.updateProperty(String(editingProperty.property_id), data);
         showSuccess('Property updated successfully');
       } else {
         await apiService.createProperty(data);
