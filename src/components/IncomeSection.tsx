@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IncomeRecord, IncomeFormData, IncomeCategory } from '../types';
-import { Plus, Trash2, DollarSign, Calendar } from 'lucide-react';
+import { Plus, Trash2, Calendar } from 'lucide-react';
 
 interface IncomeSectionProps {
   records: IncomeRecord[];
@@ -13,8 +13,8 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ records, onAdd, onDelete,
   const [isAdding, setIsAdding] = useState(false);
   const [formData, setFormData] = useState<IncomeFormData>({
     amount: 0,
-    paymentDate: new Date().toISOString().split('T')[0],
-    category: 'rent',
+    payment_date: new Date().toISOString().split('T')[0],
+    category: 'rent' as IncomeCategory,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,8 +23,8 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ records, onAdd, onDelete,
     setIsAdding(false);
     setFormData({
       amount: 0,
-      paymentDate: new Date().toISOString().split('T')[0],
-      category: 'rent',
+      payment_date: new Date().toISOString().split('T')[0],
+      category: 'rent' as IncomeCategory,
     });
   };
 
@@ -32,7 +32,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ records, onAdd, onDelete,
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold text-gray-900">Income Records</h3>
-        <button 
+        <button
           onClick={() => setIsAdding(!isAdding)}
           className="flex items-center gap-1 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
         >
@@ -45,31 +45,39 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ records, onAdd, onDelete,
         <form onSubmit={handleSubmit} className="bg-gray-50 p-4 rounded-xl border border-gray-100 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Amount</label>
-              <input 
-                type="number" 
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                Amount
+              </label>
+              <input
+                type="number"
                 required
                 min="0"
                 value={formData.amount}
-                onChange={e => setFormData({...formData, amount: Number(e.target.value)})}
+                onChange={(e) => setFormData({ ...formData, amount: Number(e.target.value) })}
                 className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
               />
             </div>
+
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Date</label>
-              <input 
-                type="date" 
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                Date
+              </label>
+              <input
+                type="date"
                 required
-                value={formData.paymentDate}
-                onChange={e => setFormData({...formData, paymentDate: e.target.value})}
+                value={formData.payment_date}
+                onChange={(e) => setFormData({ ...formData, payment_date: e.target.value })}
                 className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
               />
             </div>
+
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Category</label>
-              <select 
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                Category
+              </label>
+              <select
                 value={formData.category}
-                onChange={e => setFormData({...formData, category: e.target.value as IncomeCategory})}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value as IncomeCategory })}
                 className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
               >
                 <option value="rent">Rent</option>
@@ -78,7 +86,11 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ records, onAdd, onDelete,
               </select>
             </div>
           </div>
-          <button type="submit" className="w-full bg-gray-900 text-white py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+
+          <button
+            type="submit"
+            className="w-full bg-gray-900 text-white py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+          >
             Save Record
           </button>
         </form>
@@ -86,9 +98,11 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ records, onAdd, onDelete,
 
       {isLoading ? (
         <div className="space-y-2">
-          {[1, 2].map(i => <div key={i} className="h-12 bg-gray-50 animate-pulse rounded-lg"></div>)}
+          {[1, 2].map((i) => (
+            <div key={i} className="h-12 bg-gray-50 animate-pulse rounded-lg"></div>
+          ))}
         </div>
-      ) : records.length === 0 ? (
+      ) : (records ?? []).length === 0 ? (
         <p className="text-center py-8 text-gray-400 text-sm italic">No income records yet</p>
       ) : (
         <div className="overflow-hidden border border-gray-100 rounded-xl">
@@ -102,32 +116,41 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ records, onAdd, onDelete,
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {records.map(record => (
-                <tr key={record.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-3 text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <Calendar size={14} className="text-gray-300" />
-                      {new Date(record.paymentDate).toLocaleDateString()}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="px-2 py-1 bg-green-50 text-green-700 rounded-md text-[10px] font-bold uppercase">
-                      {record.category}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 font-semibold text-gray-900">
-                    ${record.amount.toLocaleString()}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <button 
-                      onClick={() => onDelete(record.id)}
-                      className="text-gray-300 hover:text-red-600 transition-colors"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {(records ?? []).map((record, index) => {
+                const recordId = String(record.income_id ?? record.id ?? index);
+                const paymentDate = record.payment_date ?? record.paymentDate ?? '';
+                const amount = record.amount ?? 0;
+
+                return (
+                  <tr key={recordId} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <Calendar size={14} className="text-gray-300" />
+                        {paymentDate ? new Date(paymentDate).toLocaleDateString() : 'N/A'}
+                      </div>
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <span className="px-2 py-1 bg-green-50 text-green-700 rounded-md text-[10px] font-bold uppercase">
+                        {record.category ?? 'N/A'}
+                      </span>
+                    </td>
+
+                    <td className="px-4 py-3 font-semibold text-gray-900">
+                      ${amount.toLocaleString()}
+                    </td>
+
+                    <td className="px-4 py-3 text-right">
+                      <button
+                        onClick={() => onDelete(recordId)}
+                        className="text-gray-300 hover:text-red-600 transition-colors"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
