@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ExpenseRecord, ExpenseFormData } from '../types';
-import { Plus, Trash2, ShoppingCart, Calendar, Tag } from 'lucide-react';
+import { Plus, Trash2, ShoppingCart, Calendar } from 'lucide-react';
 
 interface ExpenseSectionProps {
   records: ExpenseRecord[];
@@ -13,7 +13,7 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ records, onAdd, onDelet
   const [isAdding, setIsAdding] = useState(false);
   const [formData, setFormData] = useState<ExpenseFormData>({
     amount: 0,
-    expenseDate: new Date().toISOString().split('T')[0],
+    expense_date: new Date().toISOString().split('T')[0],
     category: '',
     vendor: '',
   });
@@ -24,7 +24,7 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ records, onAdd, onDelet
     setIsAdding(false);
     setFormData({
       amount: 0,
-      expenseDate: new Date().toISOString().split('T')[0],
+      expense_date: new Date().toISOString().split('T')[0],
       category: '',
       vendor: '',
     });
@@ -34,7 +34,7 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ records, onAdd, onDelet
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold text-gray-900">Expense Records</h3>
-        <button 
+        <button
           onClick={() => setIsAdding(!isAdding)}
           className="flex items-center gap-1 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
         >
@@ -47,50 +47,65 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ records, onAdd, onDelet
         <form onSubmit={handleSubmit} className="bg-gray-50 p-4 rounded-xl border border-gray-100 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Amount</label>
-              <input 
-                type="number" 
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                Amount
+              </label>
+              <input
+                type="number"
                 required
                 min="0"
                 value={formData.amount}
-                onChange={e => setFormData({...formData, amount: Number(e.target.value)})}
+                onChange={(e) => setFormData({ ...formData, amount: Number(e.target.value) })}
                 className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
               />
             </div>
+
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Date</label>
-              <input 
-                type="date" 
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                Date
+              </label>
+              <input
+                type="date"
                 required
-                value={formData.expenseDate}
-                onChange={e => setFormData({...formData, expenseDate: e.target.value})}
+                value={formData.expense_date}
+                onChange={(e) => setFormData({ ...formData, expense_date: e.target.value })}
                 className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
               />
             </div>
+
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Category</label>
-              <input 
-                type="text" 
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                Category
+              </label>
+              <input
+                type="text"
                 required
                 placeholder="Maintenance, Tax, etc."
                 value={formData.category}
-                onChange={e => setFormData({...formData, category: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                 className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
               />
             </div>
+
             <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Vendor</label>
-              <input 
-                type="text" 
+              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
+                Vendor
+              </label>
+              <input
+                type="text"
                 required
                 placeholder="Home Depot, Plumber, etc."
                 value={formData.vendor}
-                onChange={e => setFormData({...formData, vendor: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, vendor: e.target.value })}
                 className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
               />
             </div>
           </div>
-          <button type="submit" className="w-full bg-gray-900 text-white py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+
+          <button
+            type="submit"
+            className="w-full bg-gray-900 text-white py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+          >
             Save Record
           </button>
         </form>
@@ -98,9 +113,11 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ records, onAdd, onDelet
 
       {isLoading ? (
         <div className="space-y-2">
-          {[1, 2].map(i => <div key={i} className="h-12 bg-gray-50 animate-pulse rounded-lg"></div>)}
+          {[1, 2].map((i) => (
+            <div key={i} className="h-12 bg-gray-50 animate-pulse rounded-lg"></div>
+          ))}
         </div>
-      ) : records.length === 0 ? (
+      ) : (records ?? []).length === 0 ? (
         <p className="text-center py-8 text-gray-400 text-sm italic">No expense records yet</p>
       ) : (
         <div className="overflow-hidden border border-gray-100 rounded-xl">
@@ -115,38 +132,48 @@ const ExpenseSection: React.FC<ExpenseSectionProps> = ({ records, onAdd, onDelet
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {records.map(record => (
-                <tr key={record.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-3 text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <Calendar size={14} className="text-gray-300" />
-                      {new Date(record.expenseDate).toLocaleDateString()}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="px-2 py-1 bg-red-50 text-red-700 rounded-md text-[10px] font-bold uppercase">
-                      {record.category}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <ShoppingCart size={14} className="text-gray-300" />
-                      {record.vendor}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 font-semibold text-gray-900">
-                    ${record.amount.toLocaleString()}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <button 
-                      onClick={() => onDelete(record.id)}
-                      className="text-gray-300 hover:text-red-600 transition-colors"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {(records ?? []).map((record, index) => {
+                const recordId = String(record.expense_id ?? record.id ?? index);
+                const expenseDate = record.expense_date ?? record.expenseDate ?? '';
+                const amount = record.amount ?? 0;
+
+                return (
+                  <tr key={recordId} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <Calendar size={14} className="text-gray-300" />
+                        {expenseDate ? new Date(expenseDate).toLocaleDateString() : 'N/A'}
+                      </div>
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <span className="px-2 py-1 bg-red-50 text-red-700 rounded-md text-[10px] font-bold uppercase">
+                        {record.category ?? 'N/A'}
+                      </span>
+                    </td>
+
+                    <td className="px-4 py-3 text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <ShoppingCart size={14} className="text-gray-300" />
+                        {record.vendor ?? 'N/A'}
+                      </div>
+                    </td>
+
+                    <td className="px-4 py-3 font-semibold text-gray-900">
+                      ${amount.toLocaleString()}
+                    </td>
+
+                    <td className="px-4 py-3 text-right">
+                      <button
+                        onClick={() => onDelete(recordId)}
+                        className="text-gray-300 hover:text-red-600 transition-colors"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
